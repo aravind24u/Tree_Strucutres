@@ -66,7 +66,7 @@ public class CheckEncoding {
 
 	public static boolean isOutputEncodingNeeded(String str) {
 		//
-		if (str.trim().startsWith("<%--") || (str.contains("NO OUTPUTENCODING") && !str.contains("URLEncoder"))) {
+		if (str.trim().startsWith("<%--") || (str.contains("NO OUTPUTENCODING"))) {
 			return false;
 		} else if (str.contains("c:out")) {
 			return true;

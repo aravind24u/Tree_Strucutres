@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 
+import com.zoho.charm.project.utils.encoder.AdditionalUtils;
 import com.zoho.charm.project.utils.encoder.EncodingConstants;
 
 public class CopyFiles {
@@ -15,15 +17,19 @@ public class CopyFiles {
 	public static void main(String[] args) throws IOException {
 
 
-		for (String fileName : EncodingConstants.FILE_NAMES) {
-			copyFiles(fileName);
+		ArrayList<String> fileNamesList = AdditionalUtils.loadFileNames(EncodingConstants.FILE_NAMES_LOCATION);
+		
+		for(String fileName : fileNamesList) {
+			copyFile(fileName);
 		}
 
+
 	}
-	public static void copyFiles(String fileName) throws IOException{
+	public static void copyFile(String fileName) throws IOException{
 		System.out.println("Copying File : " + fileName);
 		Files.copy(new File(sourceFolder.concat(fileName)).toPath(),
 				new File(destinationFolder.concat(fileName)).toPath(), StandardCopyOption.REPLACE_EXISTING);
 	}
+	
 
 }

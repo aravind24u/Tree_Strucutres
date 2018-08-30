@@ -60,10 +60,17 @@ public class SemiAutomatedEncoding {
 						&& !s1.contains("stringescapeutils") && !s1.contains("urlencoder")) {
 					count++;
 					Integer choice = null;
-					if (text.trim().endsWith("?\"selected\":\"\"") || text.trim().endsWith("? \"selected\" : \"\"")
-							|| text.trim().endsWith("?\"Checked\":\"\"")
-							|| text.trim().endsWith("? \"checked\" : \"\"")) {
+					if (text.trim().length() == 1) {
 						choice = 6;
+					} else if (s1.contains("?") && s1.contains(":")) {
+						String[] values = text.split("\\?")[1].split(":");
+						String trueValue = values[0];
+						String falseValue = values[1];
+						if (trueValue.trim().startsWith("\"") && falseValue.trim().startsWith("\"")) {
+							choice = 6;
+						} else {
+							choice = 7;
+						}
 					} else {
 						System.out.println("\nScripplet Content : \t" + text.trim());
 						if (EncodingConstants.SHOULD_PRINT_ENCODING_OPTIONS) {
@@ -197,13 +204,18 @@ public class SemiAutomatedEncoding {
 		System.out.println(System.lineSeparator());
 		System.out.println(System.lineSeparator());
 		if (EncodingConstants.PRINT_IGNORED) {
-			System.out.println("Printing Ignored Files");
-			for (String file : ignoreList.keySet()) {
-				System.out.println(System.lineSeparator());
-				System.out.println("File Name : " + file);
-				for (String line : ignoreList.get(file)) {
-					System.out.println(line);
+
+			if (ignoreList != null && ignoreList.size() > 0) {
+				System.out.println("Printing Ignored Files");
+				for (String file : ignoreList.keySet()) {
+					System.out.println(System.lineSeparator());
+					System.out.println("File Name : " + file);
+					for (String line : ignoreList.get(file)) {
+						System.out.println(line);
+					}
 				}
+			} else {
+				System.out.println("No Ignored Files");
 			}
 		} else {
 			System.out.println("Set print Ignored true in " + EncodingConstants.class.getSimpleName()

@@ -13,6 +13,7 @@ public class Encode {
 
 	public static Boolean includeTld;
 	public static Boolean includeIAM;
+	public static Boolean noOutputEncodingComment;
 
 	public static void encodeFile(String fileName, StringBuilder changes) throws Exception {
 
@@ -31,11 +32,19 @@ public class Encode {
 			String line = reader.readLine();
 			while (line != null) {
 
-				String result = AutomatedEncoding.doOutputEncoding(line);
+				noOutputEncodingComment = Boolean.FALSE;
 
+				String result = line;
+
+				if (EncodingConstants.ENABLE_AUTOMATED_ENCODING) {
+					result = AutomatedEncoding.doOutputEncoding(line);
+				}
 				if (!SemiAutomatedEncoding.exit && EncodingConstants.ENABLE_SEMI_AUTOMATED_ENCODING) {
 					result = SemiAutomatedEncoding.manuallyEncodeScripplets(fileName, result, lineNo);
 					result = SemiAutomatedEncoding.manuallyEncodeCOutTag(fileName, result, lineNo);
+				}
+				if (noOutputEncodingComment && !result.contains("<%--NO OUTPUTENCODING--%>")) {
+					result = result.concat("<%--NO OUTPUTENCODING--%>");
 				}
 
 				sb.append(result);

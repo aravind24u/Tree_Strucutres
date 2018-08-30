@@ -57,14 +57,20 @@ public class AutomatedEncoding {
 			line = encodeAllTagsInAttribute(line, "class", "encodeHTMLAttribute", Boolean.FALSE);
 			line = encodeAllTagsInAttribute(line, "label", "encodeHTMLAttribute", Boolean.FALSE);
 			line = encodeAllTagsInAttribute(line, "for", "encodeHTMLAttribute", Boolean.FALSE);
+			line = encodeAllTagsInAttribute(line, "width", "encodeHTMLAttribute", Boolean.FALSE);
+			line = encodeAllTagsInAttribute(line, "height", "encodeHTMLAttribute", Boolean.FALSE);
 			line = encodeAllTagsInAttribute(line, "userspace", "encodeHTMLAttribute", Boolean.FALSE);
 			line = encodeAllTagsInAttribute(line, "rowspan", "encodeHTMLAttribute", Boolean.FALSE);
 			line = encodeAllTagsInAttribute(line, "colspan", "encodeHTMLAttribute", Boolean.FALSE);
-			line = encodeAllTagsInAttribute(line, "style", "encodeCSS", Boolean.FALSE);
+			line = encodeAllTagsInAttribute(line, "style", "encodeHTMLAttribute", Boolean.FALSE);
+			line = encodeAllTagsInAttribute(line, "data", "encodeHTMLAttribute", Boolean.FALSE);
+			line = encodeAllTagsInAttribute(line, "filePath", "encodeHTMLAttribute", Boolean.FALSE);
 			line = encodeAllTagsInAttribute(line, "onclick", "encodeJavaScript", Boolean.FALSE);
 			line = encodeAllTagsInAttribute(line, "onchange", "encodeJavaScript", Boolean.FALSE);
-			line = encodeAllTagsInAttribute(line, "action", "encodeURL", Boolean.FALSE);
-			line = encodeAllTagsInAttribute(line, "src", "encodeURL", Boolean.FALSE);
+			line = encodeAllTagsInAttribute(line, "onkeypress", "encodeJavaScript", Boolean.FALSE);
+			line = encodeAllTagsInAttribute(line, "onblur", "encodeJavaScript", Boolean.FALSE);
+			line = encodeAllTagsInAttribute(line, "action", "encodeHTMLAttribute", Boolean.FALSE);
+			line = encodeAllTagsInAttribute(line, "src", "encodeHTMLAttribute", Boolean.FALSE);
 
 			line = encodeLine(line, scriptletValue1, null, "encodeHTMLAttribute", Boolean.TRUE);
 			line = encodeLine(line, scriptletValue2, null, "encodeHTMLAttribute", Boolean.TRUE);
@@ -74,8 +80,8 @@ public class AutomatedEncoding {
 			line = encodeLine(line, scriptletName2, null, "encodeHTMLAttribute", Boolean.TRUE);
 			line = encodeLine(line, scriptletClass1, null, "encodeHTMLAttribute", Boolean.TRUE);
 			line = encodeLine(line, scriptletClass2, null, "encodeHTMLAttribute", Boolean.TRUE);
-			line = encodeLine(line, scriptletStyle1, scriptletCSS, "encodeCSS", Boolean.TRUE);
-			line = encodeLine(line, scriptletStyle2, scriptletCSS, "encodeCSS", Boolean.TRUE);
+			line = encodeLine(line, scriptletStyle1, scriptletCSS, "encodeHTMLAttribute", Boolean.TRUE);
+			line = encodeLine(line, scriptletStyle2, scriptletCSS, "encodeHTMLAttribute", Boolean.TRUE);
 			line = encodeLine(line, scriptletStyle1, null, "encodeHTMLAttribute", Boolean.TRUE);
 			line = encodeLine(line, scriptletStyle2, null, "encodeHTMLAttribute", Boolean.TRUE);
 			line = encodeLine(line, scriptletOnclick, scriptletURL, "encodeURL", Boolean.TRUE);
@@ -94,8 +100,8 @@ public class AutomatedEncoding {
 			line = encodeLine(line, scriptletPosition2, null, "encodeHTMLAttribute", Boolean.TRUE);
 			line = encodeLine(line, scriptletCustomText1, null, "encodeHTMLAttribute", Boolean.TRUE);
 			line = encodeLine(line, scriptletCustomText2, null, "encodeHTMLAttribute", Boolean.TRUE);
-			line = encodeLine(line, scriptletHref1, null, "encodeURL", Boolean.TRUE);
-			line = encodeLine(line, scriptletHref2, null, "encodeURL", Boolean.TRUE);
+			line = encodeLine(line, scriptletHref1, null, "encodeHTMLAttribute", Boolean.TRUE);
+			line = encodeLine(line, scriptletHref2, null, "encodeHTMLAttribute", Boolean.TRUE);
 			line = encodeLine(line, scriptletHTML, null, "encodeHTML", Boolean.FALSE);
 
 			line = checkIfOnlyHTML(line);
@@ -205,15 +211,31 @@ public class AutomatedEncoding {
 		if (!inputString.contains("server_path") && !inputString.contains("iamencoder")
 				&& !inputString.startsWith("i18n") && !inputString.startsWith("resourcepath")
 				&& !inputString.contains("securityutil") && !inputString.contains("csrf")
-				&& !inputString.startsWith("dateformat") && !inputString.startsWith("charmutil")
-				&& !inputString.contains(".getmsg") && !inputString.contains(".encode") && inputString.length() > 1) {
+				&& !inputString.contains("dateformat") && !inputString.startsWith("charmutil")
+				&& !inputString.contains(".getmsg") && inputString.length() > 1) {
 
-			attribute = attribute.replace("<%=" + matchedText + "%>",
-					"<%= IAMEncoder." + encodingType + "( String.valueOf( " + matchedText.trim() + " )) %>");
-			Encode.includeIAM = Boolean.TRUE;
-			if (attribute.contains("String.valueOf( p )")) {
-				System.out.println("Here");
+			if(inputString.contains("?") && inputString.contains(":") ) {
+				String[] values = matchedText.split("?")[1].split(":");
+				String trueValue = values[1];
+				String falseValue = values[2];
+				if( !(trueValue.trim().startsWith("\"") || trueValue.trim().endsWith("\"")) ) {
+					attribute = attribute.replace("?".concat(trueValue), "? <%= IAMEncoder." + encodingType + "( String.valueOf( " + trueValue.trim() + " )) %>");
+					Encode.includeIAM = Boolean.TRUE;
+				}
+				if( !(falseValue.trim().startsWith("\"") || falseValue.trim().endsWith("\"")) ) {
+					attribute = attribute.replace(":".concat(falseValue), ": <%= IAMEncoder." + encodingType + "( String.valueOf( " + falseValue.trim() + " )) %>");
+					Encode.includeIAM = Boolean.TRUE;
+				}
+			}else if(inputString.contains("urlencoder")) {
+				attribute = attribute.replace("<%=" + matchedText + "%>",
+						"<%= IAMEncoder." + encodingType + "( " + matchedText.trim().replace("URLEncoder.encode(", "") + " %>");
+				Encode.includeIAM = Boolean.TRUE;
+			} else {
+				attribute = attribute.replace("<%=" + matchedText + "%>",
+						"<%= IAMEncoder." + encodingType + "( String.valueOf( " + matchedText.trim() + " )) %>");
+				Encode.includeIAM = Boolean.TRUE;
 			}
+			
 		}
 		return attribute;
 	}

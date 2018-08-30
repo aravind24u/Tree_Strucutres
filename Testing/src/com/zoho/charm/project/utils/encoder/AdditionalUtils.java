@@ -36,8 +36,8 @@ public class AdditionalUtils {
 
 			}
 		} catch (Exception e) {
-			LOGGER.severe("File with the list of file names are not found.So loading loading file names from "
-					+ EncodingConstants.class.getName());
+			System.out.println("File with the list of file names : " + EncodingConstants.FILE_NAMES_LOCATION
+					+ " is not found , so moving on to the next method to get file names\n\n");
 		} finally {
 			if (reader != null) {
 				try {
@@ -183,19 +183,13 @@ public class AdditionalUtils {
 
 	public static void findDuplicates(String[] fileNames) {
 		try {
-			File outFile = new File(EncodingConstants.OUTPUT_FILES_FOLDER + "regexIssues.txt");
-			if (outFile.exists()) {
-				outFile.delete();
-				outFile.createNewFile();
-			}
+			File outFile = new File(EncodingConstants.OUTPUT_FILES_FOLDER + "regexIssues.html");
+
 			StringBuilder issuesBuilder = new StringBuilder();
-			BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
 			for (String fileName : fileNames) {
 				checkForDuplicateReplacement(EncodingConstants.WORKSPACE_LOCATION + fileName, issuesBuilder);
 			}
-			writer.write(issuesBuilder.toString());
-			writer.flush();
-			writer.close();
+			writeFile(outFile, issuesBuilder);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -223,12 +217,25 @@ public class AdditionalUtils {
 			}
 			for (String key : map.keySet()) {
 				if (map.get(key) > 1) {
-					issuesBuilder.append(fileName.replace(EncodingConstants.WORKSPACE_LOCATION, "") + "\n " + key.trim()
-							+ "\n" + lineNo + "\n" + line.trim());
-					issuesBuilder.append(System.lineSeparator());
-					issuesBuilder.append(System.lineSeparator());
-					// CopyFiles.copyFiles(fileName.replace(EncodingConstants.WORKSPACE_LOCATION,
-					// ""));
+					key = key.replace("IAMEncoder.encodeHTML(", "");
+					key = key.replace("IAMEncoder.encodeHTMLAttribute(", "");
+					key = key.replace("IAMEncoder.encodeURL(", "");
+					key = key.replace("IAMEncoder.encodeCSS(", "");
+					key = key.replace("IAMEncoder.encodeJavaScript(", "");
+					key = key.replace("String.valueOf(", "");
+					key = key.replace(")", "");
+					key = key.replace(")", "");
+
+					if (key.trim().length() < 4) {
+						String cls = (lineCounter++ % 2) == 0 ? "even" : "odd";
+						issuesBuilder.append("<tr class='" + cls + "'><td>"
+								+ fileName.replace(EncodingConstants.WORKSPACE_LOCATION, "") + "</td><td>" + lineNo
+								+ "</td><td>" + line.trim().replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+								+ "</td></tr>");
+
+						// CopyFiles.copyFiles(fileName.replace(EncodingConstants.WORKSPACE_LOCATION,
+						// ""));
+					}
 				}
 			}
 			line = reader.readLine();
@@ -253,7 +260,7 @@ public class AdditionalUtils {
 			String line = reader.readLine();
 			Integer lineNo = 1;
 			while (line != null) {
-				if (line.contains("enc:css") || line.contains(".encodeCSS")) {
+				if (line.contains("enc:js") || line.contains(".encodeJava")) {
 					String result = line;
 					String cssClass = (lineCounter++ % 2) == 0 ? "even" : "odd";
 					cssEncoding.append("<tr class='" + cssClass + "'><td>"
@@ -551,6 +558,24 @@ public class AdditionalUtils {
 
 	}
 
+	public static void populateJSPFileNames(String path, List<String> fileNames) {
+		List<File> files = new ArrayList<>();
+		populateFileNames(path, files, "jsp");
+		populateFileNames(path, files, "jspf");
+		if (files != null && files.size() > 0) {
+			for (File file : files) {
+				fileNames.add(file.getAbsolutePath().replace(EncodingConstants.WORKSPACE_LOCATION, ""));
+			}
+		}
+	}
+
+	public static void populateFileNames(String path, List<File> fileNames, String fileType) {
+
+		File file = new File(path);
+
+		populateFileNames(file, fileNames, fileType);
+	}
+
 	public static void populateFileNames(File file, List<File> fileNames, String fileType) {
 		if (file != null) {
 			if (file.isDirectory()) {
@@ -580,4 +605,5 @@ public class AdditionalUtils {
 		}
 		return line;
 	}
+
 }
