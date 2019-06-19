@@ -1,4 +1,4 @@
-package com.zoho.charm.project.utils;
+package com.zoho.charm.project.utils.encoder;
 
 import java.io.BufferedReader;
 import java.io.File;

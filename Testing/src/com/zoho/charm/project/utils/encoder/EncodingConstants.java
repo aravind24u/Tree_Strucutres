@@ -7,7 +7,7 @@ public interface EncodingConstants {
 	 */
 
 	// The file name would contain the remaining path
-	public static final String WORKSPACE_LOCATION = "/home/local/ZOHOCORP/aravind-5939/My_Branch/charmehr_old_UI/";
+	public static final String WORKSPACE_LOCATION = "/home/local/ZOHOCORP/aravind-5939/My_Branch/charmehr/";
 
 	// Create this directory , or an exception would be thrown
 	public static final String OUTPUT_FILES_FOLDER = "/home/local/ZOHOCORP/aravind-5939/Desktop/Encoding/";
@@ -17,7 +17,7 @@ public interface EncodingConstants {
 	 * are to be encoded
 	 */
 	// If you want to specify the folder check here
-	public static final String FOLDER_LOCATION = "webapps/charm/physician/reviews/";
+	public static final String FOLDER_LOCATION = "webapps/ehr/";
 
 	// If you wish to give the file names in a file rather than the array specify it
 	// here

@@ -50,35 +50,35 @@ public class AdditionalUtils {
 		return fileNames;
 	}
 
-	public static void writeFile(File errorFile, StringBuilder errors) {
+	public static void writeFile(File file, StringBuilder content) {
 
 		BufferedWriter writer = null;
 
 		try {
-			if (errorFile.exists()) {
-				errorFile.delete();
-				errorFile.createNewFile();
+			if (file.exists()) {
+				file.delete();
+				file.createNewFile();
 			}
 
-			writer = new BufferedWriter(new FileWriter(errorFile));
-			if (errors.length() > 0) {
+			writer = new BufferedWriter(new FileWriter(file));
+			if (content.length() > 0) {
 
 				writer.write(
 						"<html><head><style type='text/css'>table {border-collapse: collapse;} table, th, td {border: none;}.odd{border-bottom:1px solid #ccc; background-color:white;}.even{background-color:#ccc; border-bottom:1px solid white;}</style></head><body><table style='line-height: 2.5;'><tr><th>File</th><th>Line</th><th>Text</th></tr>"
-								+ errors.toString() + "</table></body></html>");
+								+ content.toString() + "</table></body></html>");
 			} else {
 				writer.write("<h2 style='position: fixed; left: 40%;top: 50%;'>Hooray ! No Errors Were Found</h2>");
 			}
-			System.out.println("Successfully Copied Errors to File : " + errorFile.getAbsolutePath());
+			System.out.println("Successfully Copied Errors to File : " + file.getAbsolutePath());
 		} catch (Exception e) {
-			System.out.println("Error While writing file : " + errorFile.getName());
+			System.out.println("Error While writing file : " + file.getName());
 		} finally {
 			if (writer != null) {
 				try {
 					writer.flush();
 					writer.close();
 				} catch (Exception e) {
-					System.out.println("Error while closing the writer while writing " + errorFile.getName());
+					System.out.println("Error while closing the writer while writing " + file.getName());
 				}
 
 			}
@@ -149,37 +149,37 @@ public class AdditionalUtils {
 		}
 	}
 
-	public static void checkIfEncodingIsPresent(String fileName) {
-		try {
-			String content = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
-			if (!content.contains("IAMEncoder.") && !content.contains("<enc:")) {
-				System.out.println(fileName.replace(EncodingConstants.WORKSPACE_LOCATION, ""));
-			}
-		} catch (Exception e) {
-			System.out.println("Error while reading file : " + fileName);
-		}
-
-	}
-
-	public static void checkIfEncodingWasAdded(String fileName) {
-		String m21WorkspaceLocation = "/home/local/ZOHOCORP/aravind-5939/My_Branch/charmehr/";
-		try {
-			String encodedContent = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
-			if (!encodedContent.contains("enc:")) {
-				String m21Content = FileUtils.readFileToString(
-						new File(fileName.replace(EncodingConstants.WORKSPACE_LOCATION, m21WorkspaceLocation)),
-						StandardCharsets.UTF_8);
-				if (StringUtils.countMatches(encodedContent, "IAMEncoder.") == StringUtils.countMatches(m21Content,
-						"IAMEncoder.")) {
-					if (m21Content.contains("IAMEncoder.")) {
-						System.out.println(fileName.replace(EncodingConstants.WORKSPACE_LOCATION, ""));
-					}
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("Error while reading file : " + fileName);
-		}
-	}
+//	public static void checkIfEncodingIsPresent(String fileName) {
+//		try {
+//			String content = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
+//			if (!content.contains("IAMEncoder.") && !content.contains("<enc:")) {
+//				System.out.println(fileName.replace(EncodingConstants.WORKSPACE_LOCATION, ""));
+//			}
+//		} catch (Exception e) {
+//			System.out.println("Error while reading file : " + fileName);
+//		}
+//
+//	}
+//
+//	public static void checkIfEncodingWasAdded(String fileName) {
+//		String m21WorkspaceLocation = "/home/local/ZOHOCORP/aravind-5939/My_Branch/charmehr/";
+//		try {
+//			String encodedContent = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
+//			if (!encodedContent.contains("enc:")) {
+//				String m21Content = FileUtils.readFileToString(
+//						new File(fileName.replace(EncodingConstants.WORKSPACE_LOCATION, m21WorkspaceLocation)),
+//						StandardCharsets.UTF_8);
+//				if (StringUtils.countMatches(encodedContent, "IAMEncoder.") == StringUtils.countMatches(m21Content,
+//						"IAMEncoder.")) {
+//					if (m21Content.contains("IAMEncoder.")) {
+//						System.out.println(fileName.replace(EncodingConstants.WORKSPACE_LOCATION, ""));
+//					}
+//				}
+//			}
+//		} catch (Exception e) {
+//			System.out.println("Error while reading file : " + fileName);
+//		}
+//	}
 
 	public static void findDuplicates(String[] fileNames) {
 		try {

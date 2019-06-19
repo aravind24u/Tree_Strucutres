@@ -1,82 +1,26 @@
 package com.zoho.charm.project.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import com.adventnet.iam.xss.IAMEncoder;
-import com.zoho.charm.project.utils.encoder.AdditionalUtils;
-import com.zoho.charm.project.utils.encoder.CheckEncoding;
-import com.zoho.charm.project.utils.encoder.EncodingConstants;
-
 public class Testing {
-
-	public static void main(String[] args) throws Exception {
-
-
-		String field = "\\n";
-		System.out.println(IAMEncoder.encodeHTML(field).replace("\\n", "br"));
+	public static void main(String[] args) throws Exception{
+		List<String> juneFile = CommonUtils.loadFile("/home/local/ZOHOCORP/aravind-5939/Desktop/Pricing/Usage_May_2019_Old.csv");
 		
-//		while(field.contains("\n")) {
-//			field = field.replace("\n", "");
-//		}
-		
-		//		Pattern pattern = Pattern.compile("(IAMEncoder.encode([^<%=]*)\\?)");
-//		System.out.println(pattern.toString());
-//		System.out.println(AutomatedEncoding.pickScriplets.toString());
-		
-		//checkEncoding();
-		// AutomatedEncoding.doOutputEncoding("<div class=\"flt \" id=\"modifiersDiv\"
-		// style=\"display:<%=(userDetails.getCountry()==null||userDetails.getCountry().equals(\"us\"))?\"block\":\"none\"%>\">");
-	}
-
-	public static void checkJars() throws IOException {
-		String location = "/home/local/ZOHOCORP/aravind-5939/Build_Downloads/Pharmacy_Build/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/";
-
-		File file = new File("/home/local/ZOHOCORP/aravind-5939/Desktop/List of JARs.txt");
-
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-
-		String line = reader.readLine();
-
-		while (line != null) {
-			File jarFile = new File(location.concat(line));
-			if (!jarFile.exists()) {
+		juneFile.forEach(line ->{
+			String practiceId = line.split(",")[0];
+			if(isNewPractice(practiceId)) {
 				System.out.println(line);
 			}
-			line = reader.readLine();
-		}
-		reader.close();
+		});
 	}
+	
+	static String newPractices = "257000014340009,257000014340011,257000014344353,257000014345001,257000014345005,257000014345033,257000014345041,257000014347041,257000014348007,257000014349001,257000014349023,257000014349049,257000014355029,257000014355031,257000014360001,257000014360045,257000014360079,257000014366051,257000014367051,257000014368007,257000014369017,257000014383001,257000014394023,257000014409005,257000014409061,257000014414005,257000014420001,257000014425009,257000014430029,257000014430065,257000014431019,257000014431071,257000014431085,257000014433001,257000014433009,257000014434009,257000014434021,257000014435003,257000014435007,257000014435055,257000014436001,257000014436415,257000014457001,257000014457069,257000014460025,257000014460027,257000014460033,257000014463009,257000014464017,257000014472349,257000014472361,257000014485011,257000014485013,257000014485059,257000014485165,257000014486027,257000014486081,257000014490057,257000014490087,257000014490089,257000014492011,257000014497103,257000014497105,257000014497163,257000014497167,257000014502035,257000014502073,257000014502109,257000014506367,257000014506395,257000014506417,257000014506419,257000014560021,257000014560023,257000014562047,257000014565031,257000014565033,257000014566043,257000014566049,257000014569003,257000014587037,257000014587345,257000014590011,257000014595015,257000014595019,257000014595021,257000014619015,257000014621039,257000014621041,257000014621043,257000014632021,257000014632125,257000014633003,257000014633049,257000014634053,257000014634079,257000014634215,257000014635007,257000014635059,257000014636633,257000014636743,257000014636745,257000014636753,257000014636761,257000014637027,257000014639041,257000014639047,257000014639295,257000014658001,257000014658031,257000014663001,257000014663003,257000014663013,257000014663047,257000014663049,257000014691095,257000014693035,257000014693049,257000014693059,257000014693105,257000014693107,257000014695099,257000014695239,257000014696029,257000014696049,257000014697073,257000014697079,257000014697101,257000014700063,257000014700083,257000014700085,257000014700111,257000014700217,257000014700243,257000014701039,257000014701053,257000014701055,257000014701061,257000014701175,257000014701231,257000014705065,257000014730173,257000014762019,257000014772015,257000014772019,257000014772065,257000014779033,257000014779041,257000014781191,257000014800051,257000014802025,257000014802027,257000014802033,257000014802043,257000014802127,257000014802131,257000014811051,257000014813015,257000014813017,257000014813095,257000014838023,257000014841047";
+	static String[] newPracticeIDS = newPractices.split(",");
 
-	public static void checkEncoding() throws Exception {
+	static List<String> newPracticeIds = Arrays.asList(newPracticeIDS);
 
-		String path = "/home/local/ZOHOCORP/aravind-5939/My_Branch/charmphr/webapps/phr";
-		List<File> files = new ArrayList<>();
-		AdditionalUtils.populateFileNames(path, files, ".jsp");
-		AdditionalUtils.populateFileNames(path, files, ".jspf");
-
-		String[] fileNames = new String[files.size()];
-		int i = 0;
-		for (File file : files) {
-			fileNames[i++] = file.getAbsolutePath().replace(path, "");
-		}
-
-		File errorFile = new File(EncodingConstants.OUTPUT_FILES_FOLDER + "M21 PHR.html");
-		StringBuilder errorsBuilder = new StringBuilder();
-
-		Integer styleCounter = 1;
-		List<String> encodingList = new ArrayList<>();
-
-		for (String fileName : fileNames) {
-			styleCounter = CheckEncoding.checkEncode(path, fileName, errorsBuilder,
-					styleCounter, encodingList);
-		}
-		System.out.println("\nWriting Errors Before Encoding");
-		AdditionalUtils.writeFile(errorFile, errorsBuilder);
-		System.out.println("\n\nTotal Number of Errors Before encoding : " + encodingList.size());
+	public static Boolean isNewPractice(String practiceId) {
+		return newPracticeIds.contains(practiceId);
 	}
 }

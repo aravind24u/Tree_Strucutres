@@ -1,4 +1,4 @@
-package com.zoho.charm.project.utils;
+package com.zoho.charm.project.utils.encoder;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,8 +10,6 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import com.zoho.charm.project.utils.encoder.EncodingConstants;
 
 public class PropWithTagsInJsps {
 
