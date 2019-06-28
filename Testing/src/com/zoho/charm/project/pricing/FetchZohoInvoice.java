@@ -9,28 +9,37 @@ import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.zoho.charm.project.utils.CommonUtils;
+
 public class FetchZohoInvoice {
 	public static void main(String[] args) throws Exception {
 		String url = "https://invoice.zoho.com/api/v3/invoices?invoice_number={0}";
 		String contentType = "multipart/form-data";
-		String oauthToken = "Zoho-oauthtoken 1000.071c597fa38b7f2c838edb8beed67ce6.7a05918d6d03cc6e5b27c3b7e50cdbcb";
+		String oauthToken = "Zoho-oauthtoken 1000.0a4fd9b023312bcb8a7fc063fc275c09.a6e795794f66ca8a1a5e8beefdc557d4";
 		List<String> practiceIds = getInvoiceIds();
 		Integer count = 0;
 		HttpClient client = new DefaultHttpClient();
 		HttpResponse response = null;
-		BufferedWriter writer = new BufferedWriter(new FileWriter("/home/local/ZOHOCORP/aravind-5939/InvoicesStatus.txt"));
+		BufferedWriter writer = new BufferedWriter(
+				new FileWriter(CommonUtils.INVOICE_HOME_DIR.concat("InvoicesStatus.txt")));
+		Scanner scanner = new Scanner(System.in);
 
+		ArrayList<String>skippedList = new ArrayList<>();
+		
 		for (String practiceId : practiceIds) {
+			response = null;
 			String invoiceId = getInvoiceNumberForPracticeId(practiceId, "05", "2019");
 			String url1 = MessageFormat.format(url, invoiceId);
 			HttpGet getRequest = new HttpGet(url1);
@@ -43,12 +52,27 @@ public class FetchZohoInvoice {
 
 			try {
 				response = client.execute(getRequest);
-				Thread.sleep(1000);
 				System.out.println(response);
+				StatusLine statusLine = response.getStatusLine();
 				BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 				String response1 = IOUtils.toString(rd);
+				if (statusLine.getStatusCode() == 401) {
+					System.out.println("AuthToken Expired. Please enter a new one :");
+					oauthToken = "Zoho-oauthtoken ".concat(scanner.nextLine());
+					skippedList.add(practiceId);
+					continue;
+				}
+
+				Thread.sleep(1000);
+
 				System.out.println(response1);
 				JSONObject obj = new JSONObject(response1);
+				if(!obj.getString("message").equals("success")) {
+					System.out.println("AuthToken Expired. Please enter a new one :");
+					oauthToken = "Zoho-oauthtoken ".concat(scanner.nextLine());
+					skippedList.add(practiceId);
+					continue;
+				}
 				if (obj.has("invoices")) {
 					JSONArray invoices = obj.getJSONArray("invoices");
 
@@ -65,11 +89,15 @@ public class FetchZohoInvoice {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if(count % 10 == 0) {
+			if (count % 10 == 0) {
 				System.out.println("Sleeping for 10 seconds");
-				Thread.sleep(10000);
+				//Thread.sleep(10000);
 			}
 		}
+		System.out.println("\n\nSkipped list");
+		skippedList.forEach(practiceId ->{
+			System.out.println(practiceId);
+		});
 		try {
 			writer.flush();
 			writer.close();
@@ -84,7 +112,7 @@ public class FetchZohoInvoice {
 		List<String> practiceIds = new ArrayList<>();
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new FileReader("/home/local/ZOHOCORP/aravind-5939/PracticesList.txt"));
+			reader = new BufferedReader(new FileReader(CommonUtils.INVOICE_HOME_DIR.concat("PracticesList.txt")));
 			String line = reader.readLine();
 			while (line != null) {
 				if (StringUtils.isNotEmpty(line.trim())) {

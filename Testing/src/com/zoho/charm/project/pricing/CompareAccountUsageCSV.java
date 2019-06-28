@@ -11,9 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.zoho.charm.project.utils.CommonUtils;
+
 public class CompareAccountUsageCSV {
 
-	private static final String folderLocation = "/home/local/ZOHOCORP/aravind-5939/Desktop/Pricing/";
 	private static String delimiter = ",";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");;
 
@@ -39,7 +40,8 @@ public class CompareAccountUsageCSV {
 		practiceIds.addAll(newUsage.keySet());
 		System.out.println("Length post adding new ids : " + practiceIds.size());
 		System.out.println("Length new ids : " + newUsage.keySet().size());
-		BufferedWriter writer = new BufferedWriter(new FileWriter(folderLocation.concat("DifferenceInCharge.csv")));
+		BufferedWriter writer = new BufferedWriter(
+				new FileWriter(CommonUtils.PRICING_HOME_DIR.concat("DifferenceInCharge.csv")));
 		try {
 			writer.write("Practice Id,New Cost,Old Cost,Difference(Old-New)");
 			for (String practiceId : practiceIds) {
@@ -76,9 +78,9 @@ public class CompareAccountUsageCSV {
 
 		BufferedReader reader = null;
 		HashMap<String, Double> usage = new HashMap<>();
-		System.out.println("Loading file : ".concat(folderLocation.concat(fileName)));
+		System.out.println("Loading file : ".concat(CommonUtils.PRICING_HOME_DIR.concat(fileName)));
 		try {
-			reader = new BufferedReader(new FileReader(folderLocation.concat(fileName)));
+			reader = new BufferedReader(new FileReader(CommonUtils.PRICING_HOME_DIR.concat(fileName)));
 
 			String line = reader.readLine();
 			line = reader.readLine();
@@ -94,7 +96,7 @@ public class CompareAccountUsageCSV {
 
 				line = reader.readLine();
 			}
-			System.out.println("Finished loading file : ".concat(folderLocation.concat(fileName)));
+			System.out.println("Finished loading file : ".concat(CommonUtils.PRICING_HOME_DIR.concat(fileName)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

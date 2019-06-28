@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
 
+import com.zoho.charm.project.utils.CommonUtils;
+
 public class ContainerDugsCompApollo {
-	private static final String folderLocation = "/home/local/ZOHOCORP/aravind-5939/Desktop/Apollo Integration/CSV/";
 	private static String delimiter = "\\|";
 	private static String unescapedDelimiter = "|";
 
@@ -31,9 +32,9 @@ public class ContainerDugsCompApollo {
 
 		BufferedReader reader = null;
 		HashMap<String, String> map = new HashMap<>();
-		System.out.println("Loading file : ".concat(folderLocation.concat(fileName)));
+		System.out.println("Loading file : ".concat(CommonUtils.APOLLO_HOME_DIR.concat(fileName)));
 		try {
-			reader = new BufferedReader(new FileReader(folderLocation.concat(fileName)));
+			reader = new BufferedReader(new FileReader(CommonUtils.APOLLO_HOME_DIR.concat(fileName)));
 
 			String line = reader.readLine();
 
@@ -45,7 +46,7 @@ public class ContainerDugsCompApollo {
 				map.put(itemId, itemName);
 
 			}
-			System.out.println("Finished loading file : ".concat(folderLocation.concat(fileName)));
+			System.out.println("Finished loading file : ".concat(CommonUtils.APOLLO_HOME_DIR.concat(fileName)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

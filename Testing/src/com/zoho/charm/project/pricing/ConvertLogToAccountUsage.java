@@ -5,8 +5,9 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import com.zoho.charm.project.utils.CommonUtils;
+
 public class ConvertLogToAccountUsage {
-	private static final String folderLocation = "/home/local/ZOHOCORP/aravind-5939/Desktop/Pricing/";
 	private static String delimiter = ",";
 
 	public static void main(String[] args) throws Exception {
@@ -16,8 +17,8 @@ public class ConvertLogToAccountUsage {
 			String month = "May";
 			String year = "2019";
 
-			reader = new BufferedReader(new FileReader(folderLocation.concat("StoreTaskLogs_May.txt")));
-			writer = new BufferedWriter(new FileWriter(folderLocation.concat("Usage_May_2019_New.csv")));
+			reader = new BufferedReader(new FileReader(CommonUtils.PRICING_HOME_DIR.concat("StoreTaskLogs_May.txt")));
+			writer = new BufferedWriter(new FileWriter(CommonUtils.PRICING_HOME_DIR.concat("Usage_May_2019_New.csv")));
 			writer.write(
 					"Practice ID, Month, Year, Encounter Count, Encounter Charge, SMS Counts, SMS Charge, FAX Pages, FAX Charge, Scan Charge, Video Mins, Video Charge, Eclaims Usage, Eclaims Charge, eRx Count, eRx Charge, Total");
 

@@ -11,11 +11,13 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.zoho.charm.project.utils.CommonUtils;
+
 public class GenerateInvoicesPracticesList {
 
 	public static void main(String[] args) throws Exception{
 		
-		String file = IOUtils.toString(new FileReader("/home/local/ZOHOCORP/aravind-5939/Desktop/Pricing/ZCustomers.txt"));
+		String file = IOUtils.toString(new FileReader(CommonUtils.INVOICE_HOME_DIR.concat("ZCustomers.txt")));
 		List<String> invoicePracticeIds = new ArrayList<>();
 		
 		JSONObject jsonObject = new JSONObject(file);
@@ -29,9 +31,9 @@ public class GenerateInvoicesPracticesList {
 		
 		System.out.println(invoicePracticeIds.size());
 		
-		List<String> usages = IOUtils.readLines(new FileReader("/home/local/ZOHOCORP/aravind-5939/Desktop/Pricing/Usage_may_Posted_ramanathan.csv"));
+		List<String> usages = IOUtils.readLines(new FileReader(CommonUtils.PRICING_HOME_DIR.concat("Usage_may_Posted_ramanathan.csv")));
 
-		BufferedWriter writer = new BufferedWriter(new FileWriter("/home/local/ZOHOCORP/aravind-5939/Desktop/Pricing/NotInTestOrCustomers.csv")); 
+		BufferedWriter writer = new BufferedWriter(new FileWriter(CommonUtils.PRICING_HOME_DIR.concat("NotInTestOrCustomers.csv"))); 
 		writer.write(usages.get(0));
 		usages.forEach(line -> {
 			String[] values = line.split(",");

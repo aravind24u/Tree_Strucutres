@@ -11,6 +11,11 @@ import org.apache.commons.lang3.StringUtils;
 import com.zoho.charm.project.utils.encoder.EncodingConstants;
 
 public class CommonUtils {
+	
+	public static final String APOLLO_HOME_DIR = "/home/local/ZOHOCORP/aravind-5939/Desktop/Apollo Integration/CSV/";
+	public static final String PRICING_HOME_DIR = "/home/local/ZOHOCORP/aravind-5939/Desktop/Pricing/";
+	public static final String INVOICE_HOME_DIR = "/home/local/ZOHOCORP/aravind-5939/Desktop/ZInvoice/";
+	
 	public static List<String> loadFile(String fileName) {
 		List<String> contents = new ArrayList<>();
 		BufferedReader reader = null;
