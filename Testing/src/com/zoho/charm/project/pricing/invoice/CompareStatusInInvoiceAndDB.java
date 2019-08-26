@@ -1,4 +1,4 @@
-package com.zoho.charm.project.pricing;
+package com.zoho.charm.project.pricing.invoice;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.zoho.charm.project.pricing.PricingUtil;
 import com.zoho.charm.project.utils.CommonUtils;
 
 public class CompareStatusInInvoiceAndDB {

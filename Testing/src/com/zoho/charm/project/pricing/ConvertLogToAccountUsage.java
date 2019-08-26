@@ -14,11 +14,11 @@ public class ConvertLogToAccountUsage {
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		try {
-			String month = "May";
+			String month = "July";
 			String year = "2019";
 
-			reader = new BufferedReader(new FileReader(CommonUtils.PRICING_HOME_DIR.concat("StoreTaskLogs_May.txt")));
-			writer = new BufferedWriter(new FileWriter(CommonUtils.PRICING_HOME_DIR.concat("Usage_May_2019_New.csv")));
+			reader = new BufferedReader(new FileReader(CommonUtils.PRICING_HOME_DIR.concat("StoreTaskLogs_July.txt")));
+			writer = new BufferedWriter(new FileWriter(CommonUtils.PRICING_HOME_DIR.concat("Usage_july_2019_New.csv")));
 			writer.write(
 					"Practice ID, Month, Year, Encounter Count, Encounter Charge, SMS Counts, SMS Charge, FAX Pages, FAX Charge, Scan Charge, Video Mins, Video Charge, Eclaims Usage, Eclaims Charge, eRx Count, eRx Charge, Total");
 

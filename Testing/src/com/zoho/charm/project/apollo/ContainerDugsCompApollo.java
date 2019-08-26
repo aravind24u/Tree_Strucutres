@@ -7,7 +7,7 @@ import java.util.HashMap;
 import com.zoho.charm.project.utils.CommonUtils;
 
 public class ContainerDugsCompApollo {
-	private static String delimiter = "\\|";
+	private static String delimiter = ",";
 	private static String unescapedDelimiter = "|";
 
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.zoho.charm.project.pricing;
+package com.zoho.charm.project.pricing.invoice;
 
 import java.io.BufferedWriter;
 import java.io.FileReader;

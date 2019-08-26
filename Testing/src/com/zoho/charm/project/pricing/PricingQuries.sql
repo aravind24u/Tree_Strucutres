@@ -1,6 +1,6 @@
 <!--Monthly Payment Details of a practice-->
 select FOR_THE_YEAR_OF,FOR_THE_MONTH_OF,MONTHLY_CHARGE,PAID_STATUS,Name,COUNT,COST 
-	from db236odb.MonthlyPaymentDetails MPD left join db236odb.MonthlyModulePricingHistory MPH on MPD.MONTHLY_PYMNT_ID = MPH.MONTHLY_PYMNT_ID 
+	from MonthlyPaymentDetails MPD left join MonthlyModulePricingHistory MPH on MPD.MONTHLY_PYMNT_ID = MPH.MONTHLY_PYMNT_ID 
 	left join db15odb.PlanAttributes PA on PA.attribute_id = MPH.attribute_id 
 	where service_customer_id = 257000013496047;
 

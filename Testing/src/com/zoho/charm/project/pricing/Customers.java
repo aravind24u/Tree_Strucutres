@@ -4,10 +4,11 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com.zoho.charm.project.utils.CommonUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.zoho.charm.project.utils.CommonUtils;
 
 public class Customers {
 	//
@@ -16,12 +17,12 @@ public class Customers {
 	//private String[] testCus = {"257000000071003", "257000000146001", "257000000175001", "257000000294001", "257000000329001", "257000000363003", "257000000642011", "257000001357001", "257000001933011", "257000002941125", "257000003465011", "257000003779007", "257000004096195", "257000000512359", "257000001628001"};
 	//private static JSONArray testCustomers = new JSONArray();
 	
-	private static JSONObject customers =  null;
-	private static JSONArray testCustomers = null;
+	public static JSONObject customers =  null;
+	public static JSONArray testCustomers = null;
 	static{
 		try{
 			String content = new String(Files.readAllBytes(Paths.get(CommonUtils.INVOICE_HOME_DIR.concat("ZCustomers.txt"))));			
-			JSONObject jsonObject = JSONObject.fromObject(content);
+			JSONObject jsonObject = new JSONObject(content);
 						
 			customers = jsonObject.getJSONObject("CUSTOMERS");
 			testCustomers = (JSONArray) jsonObject.getJSONArray("TEST_CUSTOMERS");			
@@ -32,11 +33,11 @@ public class Customers {
 		}
 	}
 	
-	public static String getCustomerId(String practiceId) {
+	public static String getCustomerId(String practiceId) throws JSONException {
 		//
 		String customerId = "";
 		
-		if( customers.containsKey(practiceId) ){
+		if( customers.has(practiceId) ){
 			//
 			customerId = customers.getString(practiceId);
 			
@@ -48,7 +49,7 @@ public class Customers {
 	public void writeCustomersToFile() throws Exception{
 		// try-with-resources statement based on post comment below :)
 		JSONObject json = new JSONObject();
-		System.out.println("No of Test Cust: " +  testCustomers.size());
+		System.out.println("No of Test Cust: " +  testCustomers.length());
 		json.put("TEST_CUSTOMERS", testCustomers.toString());
 		json.put("CUSTOMERS", customers);
 		try (FileWriter file = new FileWriter(CommonUtils.INVOICE_HOME_DIR.concat("ZCustomers.txt"))) {
@@ -59,20 +60,20 @@ public class Customers {
 	
 	public int getSize() {
 		//
-		return customers.names().size();
+		return customers.names().length();
 	}	
 	
-	public void addCustomer(String practiceId, String customerId){
+	public void addCustomer(String practiceId, String customerId) throws JSONException{
 		customers.put(practiceId, customerId);
 	}
 	
 	public void addTestCustomer(String practiceId) {
-		testCustomers.add(practiceId);
+		testCustomers.put(practiceId);
 	}
 	
 	public static Boolean isTestCustomer(String practiceId) throws Exception{
 		//		
-		int size = testCustomers.size();
+		int size = testCustomers.length();
 		for( int i=0; i<size; i++){
 			if( testCustomers.getString(i).equals(practiceId) ){
 				return true;

@@ -16,7 +16,7 @@ public class CompareAccountUsageCSV {
 
 	public static void main(String[] args) throws Exception {
 
-		String month = "May";
+		String month = "july";
 
 		HashMap<String, Double> oldUsage = CommonUtils.getHashMapFromFile("Usage_" + month + "_2019_Old.csv");
 
