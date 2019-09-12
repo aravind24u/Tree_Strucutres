@@ -2,6 +2,8 @@ package com.medicalmine.chase.bean.request;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import com.medicalmine.chase.bean.CommonElements;
+
 public class NewOrder extends CommonElements {
 
 	protected String cardBrand;

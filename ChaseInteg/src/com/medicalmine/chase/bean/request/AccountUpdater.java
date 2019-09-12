@@ -3,6 +3,10 @@ package com.medicalmine.chase.bean.request;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
+
+import com.medicalmine.chase.bean.CommonElements;
+
 public class AccountUpdater extends CommonElements {
 
 	protected String customerRefNum;
@@ -20,6 +24,16 @@ public class AccountUpdater extends CommonElements {
 		this.scheduledDate = scheduledDate;
 	}
 
+	@XmlElement(name = "CustomerMerchantID", required = true)
+	public String getMerchantID() {
+		return merchantID;
+	}
+	
+	@XmlElement(name = "CustomerBin", required = true)
+	public String getBin() {
+		return bin;
+	}
+	
 	public String getCustomerRefNum() {
 		return customerRefNum;
 	}

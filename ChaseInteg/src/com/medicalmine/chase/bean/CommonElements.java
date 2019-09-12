@@ -1,4 +1,4 @@
-package com.medicalmine.chase.bean.request;
+package com.medicalmine.chase.bean;
 
 import javax.xml.bind.annotation.XmlElement;
 

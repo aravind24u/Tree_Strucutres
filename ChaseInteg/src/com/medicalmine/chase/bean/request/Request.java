@@ -11,11 +11,15 @@ public class Request {
 
 	@XmlElement(name = "NewOrder")
 	protected NewOrder newOrder;
-	
+
 	@XmlElement(name = "MarkForCapture")
 	protected MarkForCapture markForCapture;
-	
+
+	@XmlElement(name = "AccountUpdater")
 	protected AccountUpdater accountUpdater;
+
+	@XmlElement(name = "Reversal")
+	protected Reversal reversal;
 
 	public Request() {
 		super();
@@ -27,6 +31,14 @@ public class Request {
 
 	public Request(MarkForCapture order) {
 		setMarkForCapture(order);
+	}
+
+	public Request(AccountUpdater accountUpdater) {
+		setAccountUpdater(accountUpdater);
+	}
+
+	public Request(Reversal reversal) {
+		setReversal(reversal);
 	}
 
 	public NewOrder getNewOrder() {
@@ -44,4 +56,21 @@ public class Request {
 	public void setMarkForCapture(MarkForCapture markForCapture) {
 		this.markForCapture = markForCapture;
 	}
+
+	public AccountUpdater getAccountUpdater() {
+		return accountUpdater;
+	}
+
+	public void setAccountUpdater(AccountUpdater accountUpdater) {
+		this.accountUpdater = accountUpdater;
+	}
+
+	public Reversal getReversal() {
+		return reversal;
+	}
+
+	public void setReversal(Reversal reversal) {
+		this.reversal = reversal;
+	}
+
 }

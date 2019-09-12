@@ -21,19 +21,34 @@ public class Testing {
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		marshaller.marshal(request, xml);
 
+		System.out.println("\n\nNew Order Request\n\n");
+
 		System.out.println(xml);
 
 		MarkForCapture markForCapture = new MarkForCapture(12341234L, 2500D);
 
-		Request request2 = new Request(markForCapture);
+		request = new Request(markForCapture);
 
-		StringWriter xml2 = new StringWriter();
+		xml = new StringWriter();
 
-		marshaller.marshal(request2, xml2);
+		marshaller.marshal(request, xml);
 
 		System.out.println("\n\nMark For Capture Request\n\n");
 
-		System.out.println(xml2);
+		System.out.println(xml);
+
+		AccountUpdater accountUpdater = new AccountUpdater("Customer Reference Number", "Profile Action",
+				"Scheduled Date");
+
+		request = new Request(accountUpdater);
+
+		xml = new StringWriter();
+
+		marshaller.marshal(request, xml);
+
+		System.out.println("\n\nAccount Update Request\n\n");
+
+		System.out.println(xml);
 
 	}
 }
