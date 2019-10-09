@@ -43,7 +43,6 @@
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/AdvCache.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/AdvCoreLogging.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/AdvCustomView.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/AdventNetCharm.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/AdventNetCharmServer.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/AdventNetIdiomsGallery.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/AdventNetTableComponents.jar"/>

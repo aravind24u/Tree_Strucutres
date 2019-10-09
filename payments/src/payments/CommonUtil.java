@@ -32,7 +32,8 @@ public class CommonUtil {
 	static String resellerDir = baseDir.concat("/Reseller Report");
 	
 	static String ZCustomersFile = invoiceDir.concat("/ZCustomers.txt");
-	static String usageCSV = pricingDir.concat("/Usage_august_2019_New.csv");
+	static String usageCSV = pricingDir.concat("/Usage_september_2019_New.csv");
+	//static String usageCSV = pricingDir.concat("/July/Usage_july_2019_New.csv");
 	
 	static String resellerReport = resellerDir.concat("/ResellerReport.csv");
 	

@@ -1,3 +1,4 @@
+
 package payments;
 
 
@@ -20,7 +21,7 @@ public class GenerateData {
 		
 		//Call the following function to generate Payments in Zoho Invoice.
 		//10682.34
-		ZInvoices.generatePayments();
+		//ZInvoices.generatePayments();
 		
 		//Call the following function to get the new customers customer_id from Zoho Invoice.
 		//ZInvoices.generateInvoiceData();

@@ -28,7 +28,7 @@ public class Report {
 		for(String[] row: values){
 			//
 			String practiceId = row[0];
-			String mayDue = row[16];
+			String mayDue = row[25];
 
 			HashMap<String, Object> data = new HashMap<String, Object>();			
 			data.put("may", getTwoDecimalValues( mayDue ));

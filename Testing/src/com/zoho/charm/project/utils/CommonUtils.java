@@ -24,11 +24,13 @@ import net.sf.json.JSONObject;
 
 public class CommonUtils {
 
-	public static final String APOLLO_HOME_DIR = "/home/med/Aravind/Docs/Apollo/";
-	public static final String PRICING_HOME_DIR = "/home/med/Aravind/Docs/pricing/";
-	public static final String INVOICE_HOME_DIR = "/home/med/Aravind/Docs/Invoice/";
+	public static final String APOLLO_HOME_DIR = "/home/local/ZOHOCORP/aravind-5939/Docs/Apollo/";
+	public static final String PRICING_HOME_DIR = "/home/local/ZOHOCORP/aravind-5939/Docs/pricing/";
+	public static final String INVOICE_HOME_DIR = "/home/local/ZOHOCORP/aravind-5939/Docs/Invoice/";
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");;
+	
+	public static final String USAGE_CSV = PRICING_HOME_DIR.concat("/Usage_september_2019_New.csv");
 	
 	
 	public static String CLIENT_ID = "client_id";
@@ -55,6 +57,7 @@ public class CommonUtils {
 		} catch (Exception e) {
 			System.out.println("File with the list of file names : " + EncodingConstants.FILE_NAMES_LOCATION
 					+ " is not found , so moving on to the next method to get file names\n\n");
+			e.printStackTrace();
 		} finally {
 			if (reader != null) {
 				try {
@@ -125,7 +128,7 @@ public class CommonUtils {
             parameters.put(GRANT_TYPE, GRANT_TYPE_REFRESH_TOKEN);
  
             String result = sendAPIRequest(PharmacyHubConstants.API_METHOD_POST, authServerUrl, parameters,
-                    null, PharmacyHubConstants.API_CONTENT_JSON, Boolean.FALSE, null, Boolean.TRUE);
+                    null, PharmacyHubConstants.API_CONTENT_JSON, Boolean.FALSE, null, Boolean.TRUE,null);
             response = JSONObject.fromObject(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,11 +138,11 @@ public class CommonUtils {
 	
 	 public static String sendAPIRequest(String method, String url, HashMap<String, Object> parameters, String doc,
 	            String contentType, boolean disableAutoRedirect, String authToken) throws Exception {
-	        return sendAPIRequest(method, url, parameters, doc, contentType, disableAutoRedirect, authToken, Boolean.FALSE);
+	        return sendAPIRequest(method, url, parameters, doc, contentType, disableAutoRedirect, authToken, Boolean.FALSE,null);
 	    }
 	 
 	    public static String sendAPIRequest(String method, String url, HashMap<String, Object> parameters, String doc,
-	            String contentType, boolean disableAutoRedirect, String authToken, Boolean disableAuth) throws Exception {
+	            String contentType, boolean disableAutoRedirect, String authToken, Boolean disableAuth,String mimeVersion) throws Exception {
 	 
 	        HttpURLConnection connection = null;
 	        OutputStream documentWriter = null;
@@ -162,6 +165,7 @@ public class CommonUtils {
 	            connection.setUseCaches(Boolean.FALSE);
 	            connection.setReadTimeout(10000 * 60);
 	            connection.setConnectTimeout(600000);
+	            connection.setRequestProperty("Content-transfer-encoding","text");
 	            if (!disableAuth) {
 	                connection.setRequestProperty("Authorization", authToken);// No I18N
 	            }
@@ -169,6 +173,13 @@ public class CommonUtils {
 	                connection.setInstanceFollowRedirects(Boolean.FALSE);
 	            }
 	            connection.setRequestProperty("Content-Type", contentType); // No I18N
+	            if(mimeVersion != null) {
+	            	connection.setRequestProperty("MIME-Version", mimeVersion);
+	            	connection.setRequestProperty("Request-number", "1");
+	            	connection.setRequestProperty("Document-type", "Request");
+	            	connection.setRequestProperty("MIME_CONTENT_TRANSFER_ENCODING","text");
+	            	
+	            }
 	            if (doc != null && !doc.trim().isEmpty()) {
 	                connection.setRequestProperty("Content-Length", String.valueOf(doc.length())); // No I18N
 	                documentWriter = connection.getOutputStream();

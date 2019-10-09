@@ -14,13 +14,14 @@ public class ConvertLogToAccountUsage {
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		try {
-			String month = "July";
+			String month = "September";
 			String year = "2019";
 
-			reader = new BufferedReader(new FileReader(CommonUtils.PRICING_HOME_DIR.concat("StoreTaskLogs_July.txt")));
-			writer = new BufferedWriter(new FileWriter(CommonUtils.PRICING_HOME_DIR.concat("Usage_july_2019_New.csv")));
+			reader = new BufferedReader(
+					new FileReader(CommonUtils.PRICING_HOME_DIR.concat("StoreTaskLogs_September.txt")));
+			writer = new BufferedWriter(new FileWriter(CommonUtils.PRICING_HOME_DIR.concat("Usage_sept_2019_New.csv")));
 			writer.write(
-					"Practice ID, Month, Year, Encounter Count, Encounter Charge, SMS Counts, SMS Charge, FAX Pages, FAX Charge, Scan Charge, Video Mins, Video Charge, Eclaims Usage, Eclaims Charge, eRx Count, eRx Charge, Total");
+					"Practice ID, Month, Year, Encounter Count, Encounter Charge, SMS Counts, SMS Charge, FAX Pages, FAX Charge, Scan Charge, Video Mins, Video Charge, Eclaims Usage, Eclaims Charge, eRx Count, eRx Charge,Ecommerce Count,Ecommerce Charge,Provider Count,Provider Charge,Facility Count,Facility Charge,Provider Based Encounter Count, PBE Charge, Total");
 
 			StringBuilder builder = new StringBuilder();
 
@@ -79,6 +80,23 @@ public class ConvertLogToAccountUsage {
 
 				handleAttribute(practiceLogs, writer, "Count for Module eRx is ", "Calculating cost for Module eRx.",
 						"Total cost of module eRx is ", "Final Cost of Module eRx", null);
+
+				handleAttribute(practiceLogs, writer, "Count for Module ECOMMERCE is ",
+						"Calculating cost for Module ECOMMERCE.", "Total cost of module ECOMMERCE is ",
+						"Final Cost of Module ECOMMERCE", null);
+
+				handleAttribute(practiceLogs, writer, "Count for Module Provider is ",
+						"Calculating cost for Module Provider.", "Total cost of module Provider is ",
+						"Final Cost of Module Provider", null);
+
+				handleAttribute(practiceLogs, writer, "Count for Module Facility is ",
+						"Calculating cost for Module Facility.", "Total cost of module Facility is ",
+						"Final Cost of Module Facility", null);
+
+				handleAttribute(practiceLogs, writer, "Count for Module ProviderBasedEncounter is ",
+						"Calculating cost for Module ProviderBasedEncounter.",
+						"Total cost of module ProviderBasedEncounter is ",
+						"Final Cost of Module ProviderBasedEncounter", null);
 
 				String totalCost = getFixedChargeString(practiceLogs,
 						" after applying Plan cost and order discount is ", ".Practice ");
