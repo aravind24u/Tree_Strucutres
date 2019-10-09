@@ -1,6 +1,6 @@
-package com.medicalmine.chase.bean.request;
+package com.medicalmine.aravind.chase.bean.request;
 
-import com.medicalmine.chase.bean.CommonElements;
+import com.medicalmine.aravind.chase.bean.CommonElements;
 
 public class MarkForCapture extends CommonElements {
 

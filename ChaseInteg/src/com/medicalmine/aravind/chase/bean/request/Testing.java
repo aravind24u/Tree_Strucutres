@@ -1,4 +1,4 @@
-package com.medicalmine.chase.bean.request;
+package com.medicalmine.aravind.chase.bean.request;
 
 import java.io.StringWriter;
 
@@ -9,6 +9,8 @@ import javax.xml.bind.Marshaller;
 public class Testing {
 	public static void main(String[] args) throws JAXBException {
 
+		System.out.println(System.currentTimeMillis());
+		
 		NewOrder order = new NewOrder("AC", 12341234L, 2500D, "VISA", "5454545454545454", "0112", "Name", "Line 1",
 				"Line 2", "Cupertino", "California", "95014", "8124746412", Boolean.FALSE);
 

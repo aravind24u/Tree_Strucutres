@@ -1,4 +1,4 @@
-package com.medicalmine.chase.bean.request;
+package com.medicalmine.aravind.chase.bean.request;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

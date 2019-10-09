@@ -1,11 +1,11 @@
-package com.medicalmine.chase.bean.request;
+package com.medicalmine.aravind.chase.bean.request;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
 
-import com.medicalmine.chase.bean.CommonElements;
+import com.medicalmine.aravind.chase.bean.CommonElements;
 
 public class AccountUpdater extends CommonElements {
 
