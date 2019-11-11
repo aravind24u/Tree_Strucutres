@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.zoho.logs.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class RunThisClass {
 
@@ -19,7 +19,7 @@ public class RunThisClass {
 
 		List<String> fileNamesList = AdditionalUtils.loadFileNames(EncodingConstants.FILE_NAMES_LOCATION);
 
-		if (fileNamesList.size() > 0) {
+		if (!fileNamesList.isEmpty()) {
 			fileNames = new String[fileNamesList.size()];
 			fileNames = fileNamesList.toArray(fileNames);
 			System.out.println(

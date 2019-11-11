@@ -56,11 +56,9 @@
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/commons-pool-1.5.6.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/commons-validator-1.4.1.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/conf.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/cssparser-0.9.21.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/dbcp.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/dd2proto-util.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/dnsjava-2.0.6.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/esapi-2.1.0.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/ezmorph-1.0.6.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/tomcat/webapps/ROOT/WEB-INF/lib/framework-tools.jar"/>
@@ -192,32 +190,5 @@
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/lib/javassist-3.18.2-GA.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/lib/msgpack-0.6.7.jar"/>
 	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Builds/AdventNet/Sas/lib/zohoinstrumentation.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/bcpg-jdk15on-1.60.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/bcprov-jdk15on-1.60.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/com.jcraft.jsch-0.1.54.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/commons-codec-1.11.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/commons-csv-1.5.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/definitions.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/httpclient-4.5.5.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/httpcore-4.4.9.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/javax.json-1.1.2.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/javax.json-api-1.1.2.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/javax.servlet-api-3.1.0.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/jetty-http-9.4.12.v20180830.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/jetty-io-9.4.12.v20180830.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/jetty-security-9.4.12.v20180830.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/jetty-server-9.4.12.v20180830.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/jetty-servlet-9.4.12.v20180830.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/jetty-util-9.4.12.v20180830.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/jpmc-msdk.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/log4j-api-2.11.0.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/log4j-core-2.11.0.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/MSDKCodeAssist.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/MSDKCodeAssistDoc.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/umpireservlet.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/xercesImpl-2.12.0.jar"/>
-	<classpathentry kind="lib" path="/home/local/ZOHOCORP/aravind-5939/Docs/Chase/JPMC_MSDK_1.5.0/lib/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

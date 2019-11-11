@@ -9,6 +9,7 @@ public class GenerateData {
 	public static void main(String[] args) throws Exception {
 		//
 		System.out.println("----------------------------");		
+		CommonUtil.usageCSV = CommonUtil.pricingDir.concat("/Usage_october_2019_New.csv");
 		//ZInvoices.checkPaymentData();
 		//ZInvoices.outData();		
 
@@ -21,13 +22,13 @@ public class GenerateData {
 		
 		//Call the following function to generate Payments in Zoho Invoice.
 		//10682.34
-		//ZInvoices.generatePayments();
+		//ZInvoices.generatePayments("October", "2019");
 		
 		//Call the following function to get the new customers customer_id from Zoho Invoice.
 		//ZInvoices.generateInvoiceData();
 		
 		//Call the following function to generate Invoices in Zoho Invoice.
-		//ZInvoices.generateInvoices();
+		//ZInvoices.generateInvoices("2019-11-04");
 		
 		
 		//ZInvoices.checkInvoices();

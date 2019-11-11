@@ -9,28 +9,29 @@ import com.zoho.charm.project.utils.CommonUtils;
 
 public class ConvertLogToAccountUsage {
 	private static String delimiter = ",";
+	private static String month = "September";
+	private static String year = "2019";
 
 	public static void main(String[] args) throws Exception {
-		BufferedReader reader = null;
-		BufferedWriter writer = null;
-		try {
-			String month = "September";
-			String year = "2019";
 
-			reader = new BufferedReader(
-					new FileReader(CommonUtils.PRICING_HOME_DIR.concat("StoreTaskLogs_September.txt")));
-			writer = new BufferedWriter(new FileWriter(CommonUtils.PRICING_HOME_DIR.concat("Usage_sept_2019_New.csv")));
-			writer.write(
-					"Practice ID, Month, Year, Encounter Count, Encounter Charge, SMS Counts, SMS Charge, FAX Pages, FAX Charge, Scan Charge, Video Mins, Video Charge, Eclaims Usage, Eclaims Charge, eRx Count, eRx Charge,Ecommerce Count,Ecommerce Charge,Provider Count,Provider Charge,Facility Count,Facility Charge,Provider Based Encounter Count, PBE Charge, Total");
+		StringBuilder builder = new StringBuilder();
 
-			StringBuilder builder = new StringBuilder();
-
+		try (BufferedReader reader = new BufferedReader(
+				new FileReader(CommonUtils.PRICING_HOME_DIR.concat("StoreTaskLogs_October.txt")))) {
 			String line = reader.readLine();
 
 			while (line != null) {
 				builder.append(line);
 				line = reader.readLine();
 			}
+		}
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(new FileWriter(CommonUtils.PRICING_HOME_DIR.concat("Usage_sept_2019_New.csv")));
+
+			writer.write(
+					"Practice ID, Month, Year, Encounter Count, Encounter Charge, SMS Counts, SMS Charge, FAX Pages, FAX Charge, Scan Charge, Video Mins, Video Charge, Eclaims Usage, Eclaims Charge, eRx Count, eRx Charge,Ecommerce Count,Ecommerce Charge,Provider Count,Provider Charge,Facility Count,Facility Charge,Provider Based Encounter Count, PBE Charge,Plan Charge,External Devices Count,External Devices Cost,Direct Provider Messaging Count,Direct Provider Messaging Cost, Total");
+
 			String file = builder.toString();
 
 			while (true) {
@@ -98,6 +99,19 @@ public class ConvertLogToAccountUsage {
 						"Total cost of module ProviderBasedEncounter is ",
 						"Final Cost of Module ProviderBasedEncounter", null);
 
+				String planCost = getFixedChargeString(practiceLogs, "Module PlanCharge has a fixed charge of ", ",");
+				writer.write(planCost);
+				writer.write(delimiter);
+
+				handleAttribute(practiceLogs, writer, "Count for Module ExternalDevices is ",
+						"Calculating cost for Module ExternalDevices.", "Total cost of module ExternalDevices is ",
+						"Final Cost of Module ExternalDevices", null);
+
+				handleAttribute(practiceLogs, writer, "Count for Module DirectProviderMessaging is ",
+						"Calculating cost for Module DirectProviderMessaging.",
+						"Total cost of module DirectProviderMessaging is ",
+						"Final Cost of Module DirectProviderMessaging", null);
+
 				String totalCost = getFixedChargeString(practiceLogs,
 						" after applying Plan cost and order discount is ", ".Practice ");
 				writer.write(totalCost);
@@ -109,9 +123,6 @@ public class ConvertLogToAccountUsage {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 			if (writer != null) {
 				writer.flush();
 				writer.close();
@@ -125,7 +136,7 @@ public class ConvertLogToAccountUsage {
 		Integer countStartIndex = practiceLogs.indexOf(countStartString);
 		Integer countEndIndex = practiceLogs.indexOf(countEndString);
 		String count = "0";
-		String cost = "0";
+		String cost;
 		if (countStartIndex != -1 && countEndIndex != -1) {
 			countStartIndex += countStartString.length();
 			count = practiceLogs.substring(countStartIndex, countEndIndex);
