@@ -22,10 +22,9 @@ public class Customers {
 			JSONObject jsonObject = JSONObject.fromObject(content);
 						
 			customers = jsonObject.getJSONObject("CUSTOMERS");
-			testCustomers = (JSONArray) jsonObject.getJSONArray("TEST_CUSTOMERS");	
+			testCustomers = jsonObject.getJSONArray("TEST_CUSTOMERS");	
 			
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}

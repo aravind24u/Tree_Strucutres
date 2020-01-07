@@ -9,26 +9,26 @@ public class GenerateData {
 	public static void main(String[] args) throws Exception {
 		//
 		System.out.println("----------------------------");		
-		CommonUtil.usageCSV = CommonUtil.pricingDir.concat("/Usage_october_2019_New.csv");
+		CommonUtil.usageCSV = CommonUtil.pricingDir.concat("/Usage_december_2019_New.csv");
 		//ZInvoices.checkPaymentData();
 		//ZInvoices.outData();		
 
 		//ZInvoices.getTotal(false);
 		//ZInvoices.cleanup();
 		//System.out.println("----------------------------");		
-		//ZInvoices.getTotal(Boolean.FALSE);
+		ZInvoices.getTotal(Boolean.FALSE);
 		
 		//ZInvoices.getNewCustomers();
 		
 		//Call the following function to generate Payments in Zoho Invoice.
 		//10682.34
-		//ZInvoices.generatePayments("October", "2019");
+		//ZInvoices.generatePayments("November", "2019");
 		
 		//Call the following function to get the new customers customer_id from Zoho Invoice.
 		//ZInvoices.generateInvoiceData();
 		
 		//Call the following function to generate Invoices in Zoho Invoice.
-		//ZInvoices.generateInvoices("2019-11-04");
+		//ZInvoices.generateInvoices("2020-01-04");
 		
 		
 		//ZInvoices.checkInvoices();

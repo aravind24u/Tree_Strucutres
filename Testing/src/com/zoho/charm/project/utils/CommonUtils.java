@@ -30,7 +30,7 @@ public class CommonUtils {
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");;
 	
-	public static final String USAGE_CSV = PRICING_HOME_DIR.concat("/Usage_september_2019_New.csv");
+	public static final String USAGE_CSV = PRICING_HOME_DIR.concat("/Usage_november_2019_New.csv");
 	
 	
 	public static String CLIENT_ID = "client_id";

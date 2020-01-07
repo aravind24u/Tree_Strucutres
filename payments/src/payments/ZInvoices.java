@@ -7,11 +7,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -33,7 +33,7 @@ public class ZInvoices {
 	static String invString = "MM-INV-${0}-{1}{2}-01";
 	static String cnString = "MM-CN-${0}-{1}-01";
 	static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	static SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd");
+	public static final SimpleDateFormat apiFormat = new SimpleDateFormat("yyyy-MM-dd");
 	static String encounterItemId = "201558000000210115", smsItemId = "201558000000429143",
 			faxItemId = "201558000000825003", faxAdditionalItemId = "201558000001114005",
 			scanMonthlyItemId = "201558000001134001", scanYearlyItemId = "201558000001134009",
@@ -224,8 +224,6 @@ public class ZInvoices {
 	}
 
 	public static JSONObject createInvoice(JSONObject json) throws Exception {
-		//
-		// System.out.println("JSON :" + json);
 
 		String url = invoiceURL + "invoices?";
 
@@ -250,10 +248,10 @@ public class ZInvoices {
 		return JSONObject.fromObject(getResponse("POST", url, json.toString(), "creditnote"));
 	}
 
-	private static JSONArray generateInvoiceItems(int encounterCount, Float encounterCharge, Integer smsCount,
+	private static JSONArray generateInvoiceItems(int encounterCount, Float encounterCharge, Integer smsCount,Float smsCharge,
 			boolean isFaxEnabled, Integer faxCount, Float faxCharge, Float scanCharge, Integer eClaimsUsageCount,
-			Integer eRxUserCount, Integer noOfVideoProviders, Integer ecommerceCount, String ecommerceCost,
-			Float planCost, Integer providerCount, Float providerCost) throws Exception {
+			Integer eRxUserCount, Integer noOfVideoProviders, Float videoConsultCharges, Integer ecommerceCount, String ecommerceCost,
+			Float planCost, Integer providerCount, Float providerCost, Integer dpmCount, Float dpmCost, Integer externalDevicesCount, Float externalDevicesCost) throws Exception {
 		//
 		JSONArray json = new JSONArray();
 
@@ -363,7 +361,7 @@ public class ZInvoices {
 
 		}
 
-		if (smsCount > 0) {
+		if (smsCharge > 0) {
 			//
 			JSONObject smsObj = new JSONObject();
 			smsObj.put("item_id", smsItemId);
@@ -429,11 +427,12 @@ public class ZInvoices {
 
 		}
 
-		if (noOfVideoProviders > 0) {
+		if (videoConsultCharges > 0) {
 			//
 			JSONObject vObj = new JSONObject();
 			vObj.put("item_id", videoConsultsItemId);
-			vObj.put("rate", "20.00");
+			Float rate = videoConsultCharges / noOfVideoProviders;
+			vObj.put("rate", getTwoDecimalValues(rate.toString()));
 			vObj.put("quantity", getTwoDecimalValues(noOfVideoProviders + ""));
 			vObj.put("discount", "0.00");
 
@@ -474,6 +473,27 @@ public class ZInvoices {
 
 			json.add(providerObj);
 		}
+		
+		if(dpmCost > 0) {
+			JSONObject dpmObj = new JSONObject();
+			dpmObj.put("item_id", "201558000008888010");
+			dpmObj.put("rate", String.valueOf(dpmCost / dpmCount));
+			dpmObj.put("quantity", getTwoDecimalValues(dpmCount + ""));
+			dpmObj.put("discount", "0.00");
+
+			json.add(dpmObj);	
+		}
+		
+		if(externalDevicesCost > 0) {
+			JSONObject dpmObj = new JSONObject();
+			dpmObj.put("item_id", "201558000008888001");
+			dpmObj.put("rate", String.valueOf(externalDevicesCost / externalDevicesCount));
+			dpmObj.put("quantity", getTwoDecimalValues(externalDevicesCount + ""));
+			dpmObj.put("discount", "0.00");
+
+			json.add(dpmObj);	
+		}
+		
 
 		return json;
 	}
@@ -567,6 +587,7 @@ public class ZInvoices {
 		CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(new File(CommonUtil.usageCSV))));
 		String[][] values = parser.getAllValues();
 		int i = 0;
+		StringBuilder issueIds = new StringBuilder();
 		for (String[] row : values) {
 			//
 			String practiceId = row[0];
@@ -574,7 +595,7 @@ public class ZInvoices {
 				if (!customers.isTestCustomer(practiceId)) {
 					//
 					String customerId = customers.getCustomerId(practiceId);
-					Float monthlyCharge = new Float(row[25]);
+					Float monthlyCharge = new Float(row[29]);
 					System.out.println("Customer ID :" + customerId);
 					if (!"".equals(customerId) && monthlyCharge > 0) {
 						//
@@ -595,6 +616,7 @@ public class ZInvoices {
 						Float scanCharge = null;
 						String scanChargeStr = row[9];
 						Integer noOfVideoProviders = Integer.valueOf(row[10]);
+						Float videoConsultChage = Float.parseFloat(row[11]);
 						Integer eClaimsPackageCount = Integer.valueOf(row[12]);
 						Integer eRxUserCount = Integer.valueOf(row[14]);
 						boolean isFaxEnabled = new Float(row[7]) > 0 || faxCharge > 0;
@@ -603,12 +625,22 @@ public class ZInvoices {
 						Integer ecommerceCount = Integer.parseInt(row[16]);
 						String ecommerceCost = row[17];
 
-						Float planCost = new Float(row[24]);
+						Float planCost = new Float(row[28]);
 
 						Integer providerCount = new Integer(row[18]);
 						Float providerCost = new Float(row[19]);
+						
+						Integer dpmCount = Integer.parseInt(row[24]);
+						Float dpmCost = Float.parseFloat(row[25]);
+						
+						Integer externalDevicesCount = Integer.parseInt(row[26]);
+						Float externalDevicesCost = Float.parseFloat(row[27]);
 
 						String invNumber = getInvoiceNumberForPracticeId(practiceId, month, year);
+						if(!StringUtils.equals(invNumber ,row[30])) {
+							issueIds.append(practiceId);
+							issueIds.append(System.lineSeparator());
+						}
 
 						if (isFaxEnabled) {
 							//
@@ -683,10 +715,10 @@ public class ZInvoices {
 								"ChARM EHR is Saas based monthly subscription service. It follows Use and Pay model. The subscription for each month is collected at the start of subsequent month.");
 
 						invObj.put("line_items",
-								ZInvoices.generateInvoiceItems(encCount, encounterCharge, smsCount, isFaxEnabled,
+								ZInvoices.generateInvoiceItems(encCount, encounterCharge, smsCount,smsCharge ,isFaxEnabled,
 										faxCount, faxCharge, scanCharge, eClaimsPackageCount, eRxUserCount,
-										noOfVideoProviders, ecommerceCount, ecommerceCost, planCost, providerCount,
-										providerCost));
+										noOfVideoProviders,videoConsultChage, ecommerceCount, ecommerceCost, planCost, providerCount,
+										providerCost,dpmCount,dpmCost,externalDevicesCount,externalDevicesCost));
 
 						System.out.println("Creating Invoice for Practice Id :" + practiceId);
 						ZInvoices.createInvoice(invObj);
@@ -722,6 +754,7 @@ public class ZInvoices {
 				e.printStackTrace();
 			}
 		});
+		System.out.println(issueIds.toString());
 	}
 
 	public static void generateCreditNotes() throws Exception {
@@ -832,7 +865,7 @@ public class ZInvoices {
 			if (!cus.isTestCustomer(practiceId)) {
 				Integer encCount = Integer.valueOf(row[3]);
 				Double encCharge = Double.valueOf(getTwoDecimalValues(row[4]));
-				Double charge = Double.valueOf(getTwoDecimalValues(row[25]));
+				Double charge = Double.valueOf(getTwoDecimalValues(row[29]));
 				String invNumber = getInvoiceNumberForPracticeId(practiceId, row[1], row[2]);
 
 				total += charge;
@@ -842,7 +875,7 @@ public class ZInvoices {
 
 					} else {
 						System.out.println("Invoice : " + invNumber + "::" + getTwoDecimalValues(cCharge + "") + "::"
-								+ getTwoDecimalValues(encCharge + "") + "::" + row[25]);
+								+ getTwoDecimalValues(encCharge + "") + "::" + row[29]);
 					}
 				}
 
@@ -865,7 +898,7 @@ public class ZInvoices {
 			//
 			String practiceId = row[0];
 			if (!cus.isTestCustomer(practiceId) && (i != 0)) {
-				String amount = ZInvoices.getTwoDecimalValues(row[25]);
+				String amount = ZInvoices.getTwoDecimalValues(row[29]);
 				String invNumber = getInvoiceNumberForPracticeId(practiceId, row[1], row[2]);
 				JSONObject invData = new JSONObject();
 				try {
@@ -952,11 +985,12 @@ public class ZInvoices {
 					Float scanCharge = null;
 					String scanChargeStr = (String) row[9];
 					Integer noOfVideoProviders = Integer.valueOf(row[10]);
+					Float videoconsultCharges = Float.parseFloat(row[11]);
 					Integer eClaimsPackageCount = Integer.valueOf(row[12]);
 					Integer eRxUserCount = Integer.valueOf(row[14]);
-					boolean isFaxEnabled = new Float(row[7]) > 0;
+					boolean isFaxEnabled = new Float(row[8]) > 0;
 					Integer faxCount = 0;
-
+					
 					String invNumber = getInvoiceNumberForPracticeId(practiceId, month, year);
 
 					JSONObject invData = new JSONObject();
@@ -1048,9 +1082,9 @@ public class ZInvoices {
 							"ChARM EHR is Saas based monthly subscription service. It follows Use and Pay model. The subscription for each month is collected at the start of subsequent month.");
 
 					invObj.put("line_items",
-							ZInvoices.generateInvoiceItems(encCount, encounterCharge, smsCount, isFaxEnabled, faxCount,
-									faxCharge, scanCharge, eClaimsPackageCount, eRxUserCount, noOfVideoProviders, 0,
-									"0", 0F, 0, 0F));
+							ZInvoices.generateInvoiceItems(encCount, encounterCharge, smsCount,smsCharge, isFaxEnabled, faxCount,
+									faxCharge, scanCharge, eClaimsPackageCount, eRxUserCount, noOfVideoProviders,videoconsultCharges, 0,
+									"0", 0F, 0, 0F, 0, 0F, 0, 0F));
 
 					// System.out.println(practiceId + "::" + customerId + "::" + encCount + "::" +
 					// smsCount + "::" + isFaxEnabled + "::" + faxCount + "::" + invNumber + "::" +
@@ -1162,34 +1196,32 @@ public class ZInvoices {
 	public static void getNewCustomers() throws Exception {
 		//
 		Customers customers = new Customers();
-		CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(new File(CommonUtil.usageCSV))));
+		Reader reader = new InputStreamReader(new FileInputStream(new File(CommonUtil.usageCSV)));
+		CSVStrategy strategy = new CSVStrategy(',', '"', '#');
+		CSVParser parser = new CSVParser(reader, strategy);
 		String[][] values = parser.getAllValues();
 
 		StringBuilder newCus = new StringBuilder();
-		StringBuilder newCus1 = new StringBuilder();
-		int size = 26;
 		for (String[] row : values) {
 			//
 			String practiceId = row[0];
 
 			if (!customers.isTestCustomer(practiceId)) {
 				String customerId = customers.getCustomerId(practiceId);
-				Double monthlyCharge = Double.parseDouble(row[25]);
+				Double monthlyCharge = Double.parseDouble(row[29]);
 				if (customerId.isEmpty() && monthlyCharge > 0) {
 					//
-					String str = "";
-					for (int i = 0; i < size; i++) {
-						str += "," + row[i];
+					for (int i = 0; i < row.length; i++) {
+						newCus.append(row[i]);
+						newCus.append(',');
 					}
-					newCus.append(str.substring(1) + "\n");
-					newCus1.append(practiceId + ", ");
+					newCus.append(System.lineSeparator());
 				}
 			}
 
 		}
 
 		System.out.println(newCus.toString());
-		// System.out.println(newCus1.toString());
 
 	}
 
@@ -1254,12 +1286,13 @@ public class ZInvoices {
 			if (((customerId != null && !customerId.isEmpty()) || includeNewCustomers)
 					&& !customers.isTestCustomer(practiceId)) {
 				//
-				Double encCharge = Double.valueOf(row[4]);
+				Double encCharge = Double.parseDouble(new Float(row[23]) == 0f ? row[4] : row[23]);
 
 				if (encCharge > 0) {
 					encAccCount++;
-					encTotal += Double.valueOf(row[4]);
-					encCount += Integer.valueOf(row[3]);
+					encTotal += encCharge;
+					encCount += Integer.parseInt(row[22]) > 0 ? Integer.parseInt(row[22])
+							: Integer.parseInt(row[3]);
 				}
 
 				if (!"null".equals(row[6])) {
@@ -1316,7 +1349,7 @@ public class ZInvoices {
 					}
 				}
 
-				total += Double.valueOf(row[25]);
+				total += Double.valueOf(row[29]);
 
 			}
 
@@ -1400,7 +1433,7 @@ public class ZInvoices {
 			String practiceId = row[0];
 			String customerId = customers.getCustomerId(practiceId);
 			if (customerId.isEmpty() && !customers.isTestCustomer(practiceId)) {
-				Double monthlyCharge = new Double(row[25]);
+				Double monthlyCharge = new Double(row[29]);
 				if (monthlyCharge > 0) {
 					//
 					String invNumber = getInvoiceNumberForPracticeId(practiceId, row[1], row[2]);
@@ -1523,6 +1556,7 @@ public class ZInvoices {
 					String amount = ZInvoices.getTwoDecimalValues(row[1]);
 					String customerId = customers.getCustomerId(practiceId);
 					String invNumber = getInvoiceNumberForPracticeId(practiceId, month,year);
+					
 
 					JSONObject invData = new JSONObject();
 					try {

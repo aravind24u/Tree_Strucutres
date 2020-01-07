@@ -46,4 +46,22 @@ select CONCAT(MedicalMineResellers.RESELLER_ID, ',', REPLACE(RESELLER_NAME, ',',
 	from db1odb.PracticesList INNER JOIN db1odb.MedicalMineResellers ON MedicalMineResellers.RESELLER_ID=PracticesList.RESELLER_ID
 	
 	
-	
+<!--Provider Count -->
+select * from PracticeMembersList pl 
+	left join UserToRole ur on pl.member_id = ur.user_id 
+	left join RoleToDataSet rd on ur.role_id = rd.role_id 
+	left join Role rl on ur.role_id = rl.role_id
+where member_status = 'Enabled' and data_set_name = 'SOAPNOTES' and rd.create = true
+
+
+<!--Encounter and Providers -->
+select plc.full_name as Created_by,pla.full_name as Physician_Name,pls.full_name as Signed_By , count(*)
+from ConsultationHistory ch 
+    left join  PracticeMembersList plc on ch.created_by = plc.member_id
+    left join AppointmentHistory ah on ch.consultation_id = ah.appointment_id
+    left join PracticeMembersList pla on ah.physician_id = pla.member_id
+    left join PracticeMembersList pls on ch.approved_by = pls.member_id
+
+    where from_unixtime(TIME_OF_CREATION/1000) like '2019-10-%' and consultation_id like '63998%'
+	group by ch.created_by , ah.physician_id , pls.full_name
+ 
